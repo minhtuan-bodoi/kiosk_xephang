@@ -1,8 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
 
-func QueueHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("queue handler placeholder"))
+	"github.com/gin-gonic/gin"
+)
+
+func QueueHandler(c *gin.Context) {
+	c.String(http.StatusOK, "queue handler placeholder")
 }

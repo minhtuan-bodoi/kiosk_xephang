@@ -1,8 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
 
-func CounterHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("counter handler placeholder"))
+	"github.com/gin-gonic/gin"
+)
+
+func CounterHandler(c *gin.Context) {
+	c.String(http.StatusOK, "counter handler placeholder")
 }

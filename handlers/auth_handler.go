@@ -1,9 +1,11 @@
 package handlers
 
+import (
+	"net/http"
 
-import "net/http"
+	"github.com/gin-gonic/gin"
+)
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("auth login placeholder"))
+func LoginHandler(c *gin.Context) {
+	c.String(http.StatusOK, "auth login placeholder")
 }

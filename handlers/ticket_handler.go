@@ -1,8 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
 
-func TicketHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ticket handler placeholder"))
+	"github.com/gin-gonic/gin"
+)
+
+func TicketHandler(c *gin.Context) {
+	c.String(http.StatusOK, "ticket handler placeholder")
 }

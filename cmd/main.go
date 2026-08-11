@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"queue-kiosk/routes"
 )
@@ -10,7 +9,7 @@ import (
 func main() {
 	router := routes.SetupRouter()
 	log.Println("Queue kiosk server starting on :8080")
-	if err := http.ListenAndServe(":8080", router); err != nil {
+	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }

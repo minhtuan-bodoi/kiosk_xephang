@@ -1,8 +1,11 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
 
-func ServiceHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("service handler placeholder"))
+	"github.com/gin-gonic/gin"
+)
+
+func ServiceHandler(c *gin.Context) {
+	c.String(http.StatusOK, "service handler placeholder")
 }
