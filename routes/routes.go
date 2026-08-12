@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"queue-kiosk/handlers"
+	"appointment-kiosk/handlers"
 
 	"github.com/gin-gonic/gin"
 )
