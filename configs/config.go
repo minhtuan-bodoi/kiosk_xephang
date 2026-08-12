@@ -12,9 +12,9 @@ type Config struct {
 func LoadConfig() Config {
 	return Config{
 		AppName:   getEnv("APP_NAME", "queue-kiosk"),
-		Port:      getEnv("APP_PORT", "8080"),
+		Port:      getEnv("APP_PORT", "6272"),
 		JwtSecret: getEnv("JWT_SECRET", "secret"),
-		Dsn:       getEnv("DB_DSN", "sqlite://queue-kiosk.db"),
+		Dsn:       getEnv("DB_DSN", "mongodb+srv://admin:1@cluster0.re2oqf1.mongodb.net/?appName=Cluster0"),
 	}
 }
 
