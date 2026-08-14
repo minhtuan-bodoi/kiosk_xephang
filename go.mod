@@ -1,4 +1,4 @@
-module appointment-kiosk
+module kiosk-xephang
 
 go 1.25.0
 

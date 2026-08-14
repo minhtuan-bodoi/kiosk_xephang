@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"appointment-kiosk/handlers"
+	"kiosk-xephang/handlers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,15 +9,33 @@ import (
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
+	// Serve uploaded files statically
+	router.Static("/uploads", "./uploads")
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	router.Any("/auth/login", handlers.LoginHandler)
-	router.Any("/tickets", handlers.TicketHandler)
-	router.Any("/queues", handlers.QueueHandler)
-	router.Any("/counters", handlers.CounterHandler)
-	router.Any("/services", handlers.ServiceHandler)
+	api := router.Group("/api")
+	{
+		services := api.Group("/services")
+		{
+			services.POST("", handlers.CreateService)
+			services.GET("", handlers.GetAllServices)
+			services.GET("/:id", handlers.GetServiceByID)
+			services.PUT("/:id", handlers.UpdateService)
+			services.DELETE("/:id", handlers.DeleteService)
+		}
+
+		tickets := api.Group("/tickets")
+		{
+			tickets.POST("", handlers.CreateTicket)
+			tickets.GET("", handlers.GetAllTickets)
+			tickets.GET("/:id", handlers.GetTicketByID)
+			tickets.PUT("/:id", handlers.UpdateTicket)
+			tickets.DELETE("/:id", handlers.DeleteTicket)
+		}
+	}
 
 	return router
 }
