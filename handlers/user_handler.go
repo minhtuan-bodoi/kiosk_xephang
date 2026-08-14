@@ -31,3 +31,15 @@ var  user models.User
 		"user":    user,
 	})
 }
+
+
+func GetUser (ctx *gin.Context){
+	users, err := services.GetUser()
+
+	if  err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error":err.Error(),})
+		return 
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"users":users,})
+}

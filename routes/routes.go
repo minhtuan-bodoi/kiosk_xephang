@@ -18,7 +18,10 @@ func SetupRouter() *gin.Engine {
 	router.Any("/queues", handlers.QueueHandler)
 	router.Any("/counters", handlers.CounterHandler)
 	router.Any("/services", handlers.ServiceHandler)
+	// CRUD USER
 	router.POST("/users", handlers.CreateUser)
+	router.GET("/users", handlers.GetUser)
+
 
 	return router
 }

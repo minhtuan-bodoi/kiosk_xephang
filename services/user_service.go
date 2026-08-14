@@ -21,3 +21,7 @@ func CreateUser(user models.User) error {
 
 	return repositories.CreateUser(user)
 }
+
+func GetUser()([]models.User, error){
+	return repositories.GetUser()
+}
