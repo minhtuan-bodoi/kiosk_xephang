@@ -22,6 +22,7 @@ func SetupRouter() *gin.Engine {
 		{
 			services.POST("", handlers.CreateService)
 			services.GET("", handlers.GetAllServices)
+			services.GET("/code/:code", handlers.GetServicesByCodeService)
 			services.GET("/:id", handlers.GetServiceByID)
 			services.PUT("/:id", handlers.UpdateService)
 			services.DELETE("/:id", handlers.DeleteService)
@@ -31,6 +32,7 @@ func SetupRouter() *gin.Engine {
 		{
 			tickets.POST("", handlers.CreateTicket)
 			tickets.GET("", handlers.GetAllTickets)
+			tickets.GET("/code/:code", handlers.GetTicketByTicketCode)
 			tickets.GET("/:id", handlers.GetTicketByID)
 			tickets.PUT("/:id", handlers.UpdateTicket)
 			tickets.DELETE("/:id", handlers.DeleteTicket)

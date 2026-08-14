@@ -15,8 +15,15 @@ type Config struct {
 
 func LoadConfig() *Config {
 
-	err := godotenv.Load()
-	if err != nil {
+	envPaths := []string{".env", "../.env", "../../.env"}
+	loaded := false
+	for _, path := range envPaths {
+		if err := godotenv.Load(path); err == nil {
+			loaded = true
+			break
+		}
+	}
+	if !loaded {
 		log.Println("Warning: .env file not found")
 	}
 
@@ -27,7 +34,7 @@ func LoadConfig() *Config {
 	}
 
 	if config.ServerPort == "" {
-		log.Fatal("SERVER_PORT is not configured")
+		config.ServerPort = "8080"
 	}
 
 	if config.MongoURI == "" {

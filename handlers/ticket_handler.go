@@ -77,6 +77,27 @@ func GetTicketByID(c *gin.Context) {
 	})
 }
 
+// GetTicketByTicketCode godoc
+// @Summary Get a ticket by TicketCode
+// @Tags Tickets
+// @Produce json
+// @Param code path string true "Ticket Code"
+// @Success 200 {object} model.Ticket
+// @Router /tickets/code/{code} [get]
+func GetTicketByTicketCode(c *gin.Context) {
+	code := c.Param("code")
+
+	res, err := services.GetTicketByTicketCode(code)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": res,
+	})
+}
+
 // UpdateTicket godoc
 // @Summary Update ticket details using UpdateTicketDTO
 // @Tags Tickets

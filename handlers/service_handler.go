@@ -103,6 +103,27 @@ func GetServiceByID(c *gin.Context) {
 	})
 }
 
+// GetServicesByCodeService godoc
+// @Summary Get a service by CodeService
+// @Tags Services
+// @Produce json
+// @Param code path string true "Code Service"
+// @Success 200 {object} model.Service
+// @Router /services/code/{code} [get]
+func GetServicesByCodeService(c *gin.Context) {
+	code := c.Param("code")
+
+	res, err := services.GetServicesByCodeService(code)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": res,
+	})
+}
+
 // UpdateService godoc
 // @Summary Update service details and/or icon image using UpdateServiceRequest
 // @Tags Services

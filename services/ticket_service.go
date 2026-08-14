@@ -39,6 +39,10 @@ func GetTicketByID(id string) (model.Ticket, error) {
 	return repositories.GetTicketByID(id)
 }
 
+func GetTicketByTicketCode(code string) (model.Ticket, error) {
+	return repositories.GetTicketByTicketCode(code)
+}
+
 func UpdateTicket(id bson.ObjectID, req dto.UpdateTicketRequest) error {
 	updates := bson.M{}
 

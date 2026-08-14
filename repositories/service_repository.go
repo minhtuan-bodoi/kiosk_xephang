@@ -47,14 +47,14 @@ func GetServiceByID(id string) (model.Service, error) {
 
 	objectID, err := bson.ObjectIDFromHex(id)
 	if err != nil {
-		return model.Service{}, errors.New("invalid ID format")
+		return GetServicesByCodeService(id)
 	}
 
 	var service model.Service
 	err = database.ServiceCollection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&service)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return model.Service{}, errors.New("service not found")
+			return GetServicesByCodeService(id)
 		}
 		return model.Service{}, err
 	}

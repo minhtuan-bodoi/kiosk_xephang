@@ -49,11 +49,27 @@ func GetTicketByID(id string) (model.Ticket, error) {
 
 	objectID, err := bson.ObjectIDFromHex(id)
 	if err != nil {
-		return model.Ticket{}, errors.New("invalid ID format")
+		return GetTicketByTicketCode(id)
 	}
 
 	var ticket model.Ticket
 	err = database.TicketCollection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&ticket)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return GetTicketByTicketCode(id)
+		}
+		return model.Ticket{}, err
+	}
+
+	return ticket, nil
+}
+
+func GetTicketByTicketCode(ticketCode string) (model.Ticket, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var ticket model.Ticket
+	err := database.TicketCollection.FindOne(ctx, bson.M{"ticket_code": ticketCode}).Decode(&ticket)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return model.Ticket{}, errors.New("ticket not found")
