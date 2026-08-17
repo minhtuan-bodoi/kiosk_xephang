@@ -1,27 +1,49 @@
 package configs
 
-import "os"
+import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 type Config struct {
-	AppName   string
-	Port      string
-	JwtSecret string
-	Dsn       string
+	ServerPort    string
+	MongoURI      string
+	MongoDatabase string
 }
 
-func LoadConfig() Config {
-	return Config{
-		AppName:   getEnv("APP_NAME", "queue-kiosk"),
-		Port:      getEnv("APP_PORT", "8080"),
-		JwtSecret: getEnv("JWT_SECRET", "secret"),
-		Dsn:       getEnv("DB_DSN", "sqlite://queue-kiosk.db"),
-	}
-}
+func LoadConfig() *Config {
 
-func getEnv(key, fallback string) string {
-	value := os.Getenv(key)
-	if value == "" {
-		return fallback
+	envPaths := []string{".env", "../.env", "../../.env"}
+	loaded := false
+	for _, path := range envPaths {
+		if err := godotenv.Load(path); err == nil {
+			loaded = true
+			break
+		}
 	}
-	return value
+	if !loaded {
+		log.Println("Warning: .env file not found")
+	}
+
+	config := &Config{
+		ServerPort:    os.Getenv("SERVER_PORT"),
+		MongoURI:      os.Getenv("MONGO_URI"),
+		MongoDatabase: os.Getenv("MONGO_DATABASE"),
+	}
+
+	if config.ServerPort == "" {
+		config.ServerPort = "8080"
+	}
+
+	if config.MongoURI == "" {
+		log.Fatal("MONGO_URI is not configured")
+	}
+
+	if config.MongoDatabase == "" {
+		log.Fatal("MONGO_DATABASE is not configured")
+	}
+
+	return config
 }
