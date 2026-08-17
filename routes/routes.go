@@ -37,6 +37,26 @@ func SetupRouter() *gin.Engine {
 			tickets.PUT("/:id", handlers.UpdateTicket)
 			tickets.DELETE("/:id", handlers.DeleteTicket)
 		}
+
+		provinces := api.Group("/provinces")
+		{
+			provinces.POST("", handlers.CreateProvince)
+			provinces.GET("", handlers.GetAllProvinces)
+			provinces.GET("/code/:code", handlers.GetProvincesByCodeProvince)
+			provinces.GET("/:id", handlers.GetProvinceByID)
+			provinces.PUT("/:id", handlers.UpdateProvince)
+			provinces.DELETE("/:id", handlers.DeleteProvince)
+		}
+
+		wards := api.Group("/wards")
+		{
+			wards.POST("", handlers.CreateWard)
+			wards.GET("", handlers.GetAllWards)
+			wards.GET("/code/:code", handlers.GetWardsByCodeWard)
+			wards.GET("/:id", handlers.GetWardByID)
+			wards.PUT("/:id", handlers.UpdateWard)
+			wards.DELETE("/:id", handlers.DeleteWard)
+		}
 	}
 
 	return router

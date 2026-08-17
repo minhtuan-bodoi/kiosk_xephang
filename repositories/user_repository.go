@@ -25,6 +25,7 @@ func GetUser() ([]model.User, error) {
 	defer cancel()
 
 	cursor, err := database.UserCollection.Find(ctx, bson.D{})
+	
 	if err != nil {
 		return nil, err
 	}

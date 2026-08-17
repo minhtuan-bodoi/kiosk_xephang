@@ -15,6 +15,8 @@ var DB *mongo.Database
 var ServiceCollection *mongo.Collection
 var TicketCollection *mongo.Collection
 var UserCollection *mongo.Collection
+var ProvinceCollection *mongo.Collection
+var WardCollection *mongo.Collection
 
 func ConnectMongoDB(config *configs.Config) *mongo.Client {
 
@@ -40,6 +42,8 @@ func ConnectMongoDB(config *configs.Config) *mongo.Client {
 	ServiceCollection = DB.Collection("services")
 	TicketCollection = DB.Collection("tickets")
 	UserCollection = DB.Collection("users")
+	ProvinceCollection = DB.Collection("provinces")
+	WardCollection = DB.Collection("wards")
 
 	log.Println("MongoDB connected successfully")
 
