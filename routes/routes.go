@@ -37,6 +37,15 @@ func SetupRouter() *gin.Engine {
 			tickets.PUT("/:id", handlers.UpdateTicket)
 			tickets.DELETE("/:id", handlers.DeleteTicket)
 		}
+
+		appointments := api.Group("/appointments")
+		{
+			appointments.POST("", handlers.CreateAppointment)
+			appointments.GET("", handlers.GetAllAppointments)
+			appointments.GET("/cccd/:cccd", handlers.GetAppointmentByCCCD)
+			appointments.PUT("/:id", handlers.UpdateAppointment)
+			appointments.DELETE("/:id", handlers.DeleteAppointment)
+		}
 	}
 
 	return router
