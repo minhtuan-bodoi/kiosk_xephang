@@ -22,7 +22,7 @@ import (
 // @Router /tickets [post]
 func CreateTicket(c *gin.Context) {
 	var ticket model.Ticket
-	if err := c.ShouldBind(&ticket); err != nil {
+	if err := c.ShouldBindJSON(&ticket); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
