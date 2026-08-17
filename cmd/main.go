@@ -1,25 +1,30 @@
 package main
 
 import (
+	"context"
 	"log"
 
-	"queue-kiosk/configs"
-	"queue-kiosk/database"
-	"queue-kiosk/routes"
+	"kiosk-xephang/configs"
+	"kiosk-xephang/database"
+	"kiosk-xephang/routes"
 )
 
 func main() {
-	cfg := configs.LoadConfig()
+	config := configs.LoadConfig()
 
-	client, err := database.Connect(cfg.Dsn)
-	if err != nil {
-		log.Fatal("MongoDB connection failed: ", err)
-	}
-	defer client.Disconnect(nil)
+	mongoClient := database.ConnectMongoDB(config)
+	defer func() {
+		if err := mongoClient.Disconnect(context.Background()); err != nil {
+			log.Println("MongoDB disconnect error:", err)
+		}
+	}()
 
+	// Initialize Gin router
 	router := routes.SetupRouter()
-	log.Println("Queue kiosk server starting on :" + cfg.Port)
-	if err := router.Run(":" + cfg.Port); err != nil {
+
+	log.Printf("Appointment Server running on :%s", config.ServerPort)
+
+	if err := router.Run(":" + config.ServerPort); err != nil {
 		log.Fatal(err)
 	}
 }

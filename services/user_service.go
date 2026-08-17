@@ -2,11 +2,11 @@ package services
 
 import (
 	"errors"
-	"queue-kiosk/models"
-	"queue-kiosk/repositories"
+	"kiosk-xephang/model"
+	"kiosk-xephang/repositories"
 )
 
-func CreateUser(user models.User) error {
+func CreateUser(user model.User) error {
 	if user.Username == "" {
 		return errors.New("Tên user không được để trống")
 	}
@@ -22,6 +22,6 @@ func CreateUser(user models.User) error {
 	return repositories.CreateUser(user)
 }
 
-func GetUser()([]models.User, error){
+func GetUser()([]model.User, error){
 	return repositories.GetUser()
 }
