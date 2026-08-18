@@ -14,20 +14,20 @@ import (
 
 func CreateProvince(province model.Province) error {
 	province.Name = strings.TrimSpace(province.Name)
-	province.Code = strings.TrimSpace(province.Code)
+	province.ProvinceCode = strings.TrimSpace(province.ProvinceCode)
 
 	if province.Name == "" {
 		return errors.New("Không được để trống tên tỉnh thành")
 	}
 
-	if province.Code == "" {
+	if province.ProvinceCode == "" {
 		return errors.New("Không được để trống mã tỉnh thành")
 	}
 
-	if exists, err := repositories.IsProvinceCodeExists(province.Code); err != nil {
+	if exists, err := repositories.IsProvinceCodeExists(province.ProvinceCode); err != nil {
 		return err
 	} else if exists {
-		return fmt.Errorf("code '%s' already exists in database", province.Code)
+		return fmt.Errorf("code '%s' already exists in database", province.ProvinceCode)
 	}
 
 	return repositories.CreateProvince(province)

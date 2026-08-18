@@ -2,7 +2,6 @@ package routes
 
 import (
 	"kiosk-xephang/handlers"
-
 	"github.com/gin-gonic/gin"
 )
 

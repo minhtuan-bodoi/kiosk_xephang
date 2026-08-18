@@ -21,8 +21,14 @@ func CreateWard(ward model.Ward) error {
 	if ward.Code == "" {
 		return errors.New("Không được để trống mã phường")
 	}
-	if ward.ProvinceID.IsZero() {
+	if ward.ProvinceCode == "" {
 		return errors.New("province_id không được để trống")
+	}
+
+	if exists, err := repositories.IsProvinceCodeExists(ward.ProvinceCode); err != nil {
+		return err
+	} else if !exists {
+		return fmt.Errorf("province_id '%s' không tồn tại", ward.ProvinceCode)
 	}
 
 	if exists, err := repositories.IsWardCodeExists(ward.Code); err != nil {
@@ -35,15 +41,44 @@ func CreateWard(ward model.Ward) error {
 }
 
 func GetAllWards() ([]model.Ward, error) {
-	return repositories.GetWards()
+	wards, err := repositories.GetWards()
+	if err != nil {
+		return wards, err
+	}
+
+	for i, ward := range wards {
+		if province, err := repositories.GetProvincesByCodeProvince(ward.ProvinceCode); err == nil {
+			wards[i].ProvinceName = province.Name
+		}
+	}
+
+	return wards, nil
 }
 
 func GetWardByID(id string) (model.Ward, error) {
-	return repositories.GetWardByID(id)
+	ward, err := repositories.GetWardByID(id)
+	if err != nil {
+		return ward, err
+	}
+
+	if province, err := repositories.GetProvincesByCodeProvince(ward.ProvinceCode); err == nil {
+		ward.ProvinceName = province.Name
+	}
+
+	return ward, nil
 }
 
 func GetWardsByCodeWard(code string) (model.Ward, error) {
-	return repositories.GetWardsByCodeWard(code)
+	ward, err := repositories.GetWardsByCodeWard(code)
+	if err != nil {
+		return ward, err
+	}
+
+	if province, err := repositories.GetProvincesByCodeProvince(ward.ProvinceCode); err == nil {
+		ward.ProvinceName = province.Name
+	}
+
+	return ward, nil
 }
 
 func UpdateWard(id bson.ObjectID, req dto.UpdateWardRequest) error {
@@ -70,11 +105,14 @@ func UpdateWard(id bson.ObjectID, req dto.UpdateWardRequest) error {
 		if provinceID == "" {
 			return fmt.Errorf("%w: province_id không được để trống", errors.New("Dữ liệu ko hợp lệ"))
 		}
-		objectID, err := bson.ObjectIDFromHex(provinceID)
-		if err != nil {
-			return errors.New("invalid province_id format")
+
+		if exists, err := repositories.IsProvinceCodeExists(provinceID); err != nil {
+			return err
+		} else if !exists {
+			return fmt.Errorf("%w: province_id '%s' không tồn tại", errors.New("Dữ liệu ko hợp lệ"), provinceID)
 		}
-		updates["province_id"] = objectID
+
+		updates["province_id"] = provinceID
 	}
 
 	if len(updates) == 0 {
